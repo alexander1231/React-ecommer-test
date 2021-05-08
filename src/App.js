@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState, useEffect}  from 'react';
+//import Products from './components/products/products'
+//import Navbar from './components/Navbar/Navbar'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+import {Products, Navbar} from './components'
+import { commerce } from './lib/commerce';
+import axios from "axios";
+
+
+const App = () =>{
+    const [products, setProducts] = useState([]);
+    const [cart, setCart] = useState({});
+
+    const fetchProducts = async () => {
+        const url_products = "http://127.0.0.1:9000/api/products";
+        var data = {}
+        await axios.get(url_products).then(response=>{       
+             data= response.data     
+            console.log(response.data);
+        }).catch(error =>{
+            console.log(error => {
+                console.log(error.message)
+            })
+        })
+
+        console.log(data);
+        setProducts(data);
+    }
+
+    
+
+    useEffect(() => {
+        fetchProducts();
+    },[])
+
+    //console.log(products.data)
+
+    return (
+    <div>
+        <Navbar></Navbar>
+        <Products products={products}></Products>
     </div>
-  );
+    )
 }
 
 export default App;
