@@ -5,6 +5,7 @@ import React,{useState, useEffect}  from 'react';
 import {Products, Navbar, Cart} from './components'
 import axios from "axios";
 import { ContactlessOutlined } from '@material-ui/icons';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 
 const App = () =>{
@@ -59,9 +60,24 @@ const App = () =>{
 
     return (
     <div>
-        <Navbar totalItems={cart.total_items}></Navbar>
-        {/*<Products products={products} onAddToCart={handleAddToCart}></Products>*/}
-        <Cart cart={cart}></Cart>
+        <Router>
+            <div>
+                <Navbar totalItems={cart.total_items}></Navbar>
+                <Switch>
+                    <Route exact path="/">
+                        <Products products={products} onAddToCart={handleAddToCart}></Products>
+                    </Route>
+
+                    <Route exact path="/cart">
+                        <Cart cart={cart}></Cart>    
+                    </Route>
+
+                    
+                    
+                </Switch>
+                
+            </div>
+        </Router>
     </div>
     )
 }
