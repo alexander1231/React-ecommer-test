@@ -2,7 +2,7 @@ import React,{useState, useEffect}  from 'react';
 //import Products from './components/products/products'
 //import Navbar from './components/Navbar/Navbar'
 
-import {Products, Navbar, Cart} from './components'
+import {Products, Navbar, Cart, Checkout} from './components'
 import axios from "axios";
 import { ContactlessOutlined } from '@material-ui/icons';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
@@ -45,8 +45,12 @@ const App = () =>{
     }
 
     const handleAddToCart = async(productId, quantity) =>{
-        console.log(productId)
-        //const item = await axios.post()
+        const url_add_cart = "http://127.0.0.1:9000/api/cart"
+        await axios.post(url_add_cart, {"id_product":productId, "quantity":quantity}).then(response =>{
+            
+        }).catch(error=>{
+            console.log(error.message);
+        })
     }
 
     const handleRemoveCart = async(cart_id) =>{
@@ -110,13 +114,15 @@ const App = () =>{
                 <Navbar totalItems={cart.total_items}></Navbar>
                 <Switch>
                     <Route exact path="/">
-                        <Products products={products} onAddToCart={handleAddToCart}></Products>
+                        <Products products={products} handleAddToCart={handleAddToCart}></Products>
                     </Route>
 
                     <Route exact path="/cart">
                         <Cart cart={cart} handleEmptyCart={handleRemoveFromCart} handleRemoveCart={handleRemoveCart} handleUpdateCartQty={handleUpdateCartQty }></Cart>    
                     </Route>
-
+                    <Route exact path="/checkout">
+                        <Checkout></Checkout>
+                    </Route>
                     
                     
                 </Switch>
