@@ -49,6 +49,51 @@ const App = () =>{
         //const item = await axios.post()
     }
 
+    const handleRemoveCart = async(cart_id) =>{
+        const url_cart = "http://127.0.0.1:9000/api/cart/" + String(cart_id);;
+        await axios.delete(url_cart ).then(response =>{
+            const rps = response;
+            console.log(response);
+            fetchCart();
+        }).catch(error =>{
+            console.log(error.message);
+        });
+    }
+
+    const handleRemoveFromCart = async(productId) =>  {
+        const url_cart = "http://127.0.0.1:9000/api/cart/";
+        let cart = {}
+        await axios.delete(url_cart, {"productId":productId}).then((response) =>{
+            const cart = response.data;
+            fetchCart();
+        }).catch(error =>{
+            console.log(error.message);
+        });
+
+        setCart(cart);
+    }
+
+    const handleEmptyCart = async() => {
+        const url_cart = "http://127.0.0.1:9000/api/cartEmpty";
+        await axios.post(url_cart).then(response =>{
+            const cart = response.data;
+        }).catch(error =>{
+            console.log(error.message);
+        });
+
+    }
+
+    const handleUpdateCartQty = async(cart_id, quantity) => {
+        const url_cart_upt = "http://127.0.0.1:9000/api/quantyCart/" + String(cart_id);
+        await axios.put(url_cart_upt, {"quantity": quantity}).then(response =>{
+            console.log(response);
+            fetchCart();
+
+        }).catch(error => {
+
+        });
+    }
+
     
 
     useEffect(() => {        
@@ -69,7 +114,7 @@ const App = () =>{
                     </Route>
 
                     <Route exact path="/cart">
-                        <Cart cart={cart}></Cart>    
+                        <Cart cart={cart} handleEmptyCart={handleRemoveFromCart} handleRemoveCart={handleRemoveCart} handleUpdateCartQty={handleUpdateCartQty }></Cart>    
                     </Route>
 
                     
