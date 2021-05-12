@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {InputLabel, Select, MenuItem, Button, Grid, Typography} from '@material-ui/core';
 import {useForm, FormProvider} from 'react-hook-form';
+import {Link}  from 'react-router-dom';
 
 import FormInput from './CustomTextField';
 
-const AddressForm = () => {
+const AddressForm = ({checkoutToken, next}) => {
     const [shippingCountries, setShippingCountries] = useState([])
     const [shippingCountry, setShippingCountry] = useState('')
     const [shippingSubdivisions, setShippingSubdivisions] = useState([])
@@ -12,11 +13,13 @@ const AddressForm = () => {
     const [shippingOptions, setShippingOptions] = useState([])
     const [shippingOption, setShippingOption] = useState('')
     const methods = useForm();
+
+
     return (
         <>
-          <Typography variant="h6" gutterBottm></Typography>
+          <Typography variant="h6" gutterBottom></Typography>
           <FormProvider {...methods}>
-            <form onSubmit=''>
+            <form onSubmit={methods.handleSubmit((data)=>next({...data}))}>
               <Grid container spacing={3}>
                   <FormInput required name='firstName' label='First Name' />
                   <FormInput required name='lastName' label='Last Name' />
@@ -24,7 +27,7 @@ const AddressForm = () => {
                   <FormInput required name='email' label='Email' />
                   <FormInput required name='city' label='City' />
                   <FormInput required name='zip' label='zip / Postal Code' />                  
-                  <Grid Item xs={12} sm={6}>
+                  {/*<Grid Item xs={12} sm={6}>
                     <InputLabel>Shipping Country</InputLabel>
                     <Select value='' fullWidth onChange=''>
                         <MenuItem key='' value=''>
@@ -47,8 +50,13 @@ const AddressForm = () => {
                           Select Me
                         </MenuItem>
                     </Select>
-                  </Grid>
-              </Grid>
+                  </Grid>*/}
+                </Grid>
+                <br/>
+                <div style={{ display:'flex', justifyContent:'space-between'}}>
+                    <Button component={Link} to="/cart" variant="outlined"> Back To Cart</Button>
+                    <Button type="submit" variant="contained" color="primary"> Next</Button>
+                </div>
             </form>
           </FormProvider>
         </>
